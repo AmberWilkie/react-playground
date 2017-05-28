@@ -5,9 +5,9 @@ class Input extends Component {
 	state = { color: ''};
   
   	submitText = (e) => {
-  	e.preventDefault();
-  	console.log(this.state.color);
+  		e.preventDefault();
 		this.props.addColor(this.state.color);
+		this.state.color = '';
   	}
   render() {
   	return (
@@ -27,21 +27,19 @@ class Input extends Component {
 }
 
 const ColorBox = (props) => {
-	// console.log('COLORBOX', props);
 	return (
-  	<div 
-      style={{
-      	background: props.color, 
-        width: '50px', 
-        height: '50px', 
-        margin: '1em',
-      display: 'inline-block'}}
-    ></div>
-  )
+		<div style={{
+			background: props.color, 
+			width: '50px', 
+			height: '50px', 
+			margin: '1em',
+			display: 'inline-block'}}
+	    	>
+		</div>
+  	)
 }
 
 const BoxList = (props) => {
-	// console.log('BOXLIST', props);
   return (
     <div>
       {props.colors.map(
