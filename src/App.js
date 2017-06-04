@@ -4,16 +4,17 @@ import './App.css';
 class Input extends Component {
 	state = { color: ''};
   
-  	submitText = (e) => {
-  		e.preventDefault();
-		  this.props.addColor(this.state.color);
-		  this.state.color = '';
-  	}
+  submitText = (e) => {
+    e.preventDefault();
+    this.props.addColor(this.state.color);
+    this.state.color = '';
+  }
   render() {
   	return (
     	<form onSubmit={this.submitText}>
       	<input 
           type="text"
+          autoFocus="true"
           placeholder="pick a color" 
           value={this.state.color}
           onChange={(event) => { this.setState({
@@ -34,38 +35,50 @@ const ColorBox = (props) => {
 			height: '50px', 
 			margin: '1em',
 			display: 'inline-block'}}
-	    	>
+      onClick= {() => props.removeBox(props.color)}
+	  >
 		</div>
   	)
 }
 
-const BoxList = (props) => {
-  return (
-    <div>
-      {props.colors.map(
-        color => <ColorBox {...color} />
-      )}
-    </div>
-  )
+class BoxList extends Component {
+  render() {
+    return (
+      <div>
+        {this.props.colors.map(
+          (color, i) => <ColorBox {...color} key={i} removeBox={this.props.removeBox} />
+        )}
+      </div>
+    )
+  }
 }
 
 class App extends Component {
 	state = {
   	data: []
-  }  
+  }
+
   addColor = (color) => {
-	  console.log('color: ', color);
-	  console.log('before state change: ', this.state.data);
   	this.setState(prevState => ({
     	data: prevState.data.concat({color: color})
     }))
-	  console.log('after state change: ', this.state.data);
   }
+
+  removeColor = (color) => {
+    this.setState(prevState => ({
+      data: prevState.data.filter( (item) => {
+        if(item.color !== color) {
+          return item
+        }
+      })
+    }))
+  }
+
   render() {
   	return (
     	<div>
     	  <Input addColor={this.addColor} />
-        <BoxList colors={this.state.data} />
+        <BoxList colors={this.state.data} removeBox={this.removeColor} />
       </div>
     );
   };
