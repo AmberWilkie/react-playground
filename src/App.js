@@ -32,6 +32,54 @@ class Input extends Component {
   }
 }
 
+class ColorPicker extends Component {
+	state = { color: ''};
+  
+  submitColor = (e) => {
+    e.preventDefault();
+    this.props.addColor(this.state.color);
+    this.state.color = '';
+  }
+  render() {
+  	return (
+    	<form onSubmit={this.submitColor}>
+        <input type="color"
+           onChange={(event) => { this.setState({
+          	color: event.target.value
+          })}}
+        />
+        <button type="submit">Submit</button>
+      </form>
+    )
+  }
+}
+
+
+const Slider = (props) => {
+  return (
+    <input type="range" value={props.rotation}
+      min='0' max='360'
+      onChange={(event) => { 
+        props.setRotation(event.target.value);
+       }}
+    />
+  )
+}
+
+const Canvas = (props) => {
+  const colors = props.colors.map( item => item.color)
+  return (
+    <div>
+    <canvas id="canvas" width="500px" height="350px" style={{
+        border: '1px solid #d3d3d3',
+        backgroundImage: `linear-gradient(${props.rotation}deg, ${colors.join(', ')})`
+      }}>
+    Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    </div>
+  )
+}
+
 const ColorBox = (props) => {
 	return (
 		<div style={{
@@ -60,7 +108,8 @@ class BoxList extends Component {
 
 class App extends Component {
 	state = {
-  	data: []
+  	data: [],
+    rotation: '90'
   }
 
   addColor = (color) => {
@@ -79,11 +128,24 @@ class App extends Component {
     }))
   }
 
+  setRotation = (rotation) => {
+    this.setState( () => ({
+      rotation: rotation
+    }))
+  }
+
   render() {
+    const {
+      data,
+      rotation
+    } = this.state
   	return (
     	<div>
-    	  <Input addColor={this.addColor} />
-        <BoxList colors={this.state.data} removeBox={this.removeColor} />
+    	  <ColorPicker addColor={this.addColor} />
+        <BoxList colors={data} removeBox={this.removeColor} />
+        <Slider rotation={rotation} setRotation={this.setRotation} />
+        <br /><br />
+        <Canvas colors={data} rotation={rotation}/>
       </div>
     );
   };
