@@ -21,6 +21,11 @@ class Input extends Component {
           	color: event.target.value
           })}}
         />
+        <input type="color"
+           onChange={(event) => { this.setState({
+          	color: event.target.value
+          })}}
+        />
         <button type="submit">Submit</button>
       </form>
     )
