@@ -9,7 +9,7 @@ class Input extends Component {
     const validatedColor = this.colourNameToHex(this.state.color);
     if (validatedColor.length === 7) {
       this.props.addColor(validatedColor);
-      this.state.color = '';
+      this.setStateColor('');
     }
   }
 
@@ -47,7 +47,7 @@ class Input extends Component {
     
     if ( colour.includes('#')) {
       return colour
-    } else if ( (typeof colours[colour.toLowerCase()] != 'undefined')) {
+    } else if ( (typeof colours[colour.toLowerCase()] !== 'undefined')) {
       return colours[colour.toLowerCase()];
     }
 
