@@ -6,8 +6,8 @@ class Input extends Component {
   
   	submitText = (e) => {
   		e.preventDefault();
-		this.props.addColor(this.state.color);
-		this.state.color = '';
+		  this.props.addColor(this.state.color);
+		  this.state.color = '';
   	}
   render() {
   	return (
