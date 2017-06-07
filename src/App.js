@@ -18,12 +18,12 @@ const Canvas = (props) => {
   const colors = props.colors.map( item => item.color)
   return (
     <div>
-    <canvas id="canvas" width="500px" height="350px" style={{
-      border: '1px solid #d3d3d3',
+      <canvas id="canvas" width="500px" height="350px" style={{
+        border: '1px solid #d3d3d3',
         backgroundImage: `linear-gradient(${props.rotation}deg, ${colors.join(', ')})`
-    }}>
-    Your browser does not support the HTML5 canvas tag.
-    </canvas>
+      }}>
+      Your browser does not support the HTML5 canvas tag.
+      </canvas>
     </div>
   )
 }
