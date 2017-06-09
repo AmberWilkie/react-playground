@@ -1,11 +1,18 @@
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import rootReducer from '../reducers';
+import createHistory from 'history/createBrowserHistory';
+import { routerMiddleware } from 'react-router-redux';
 
-export default function configureStore(initialState) {
+export const history = createHistory();
+
+export function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
-    window.devToolsExtension ? window.devToolsExtension() : undefined
+    compose (
+      applyMiddleware(routerMiddleware(history)),
+      window.devToolsExtension ? window.devToolsExtension() : undefined
+    )
   );
 
   if (module.hot) {

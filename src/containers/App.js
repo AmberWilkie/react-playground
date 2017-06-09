@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import '../App.css';
-import Input from '../containers/input/input'
-import Login from '../containers/login/login'
-import Canvas from '../components/Canvas';
-import Slider from '../components/Slider';
-import BoxList from '../components/BoxList';
+import { ConnectedRouter } from 'react-router-redux';
+import { Route } from 'react-router-dom';
+import { history } from './../store/configureStore';
+
+import Header from '../containers/Header';
+import Home from '../components/Home';
+import ColorBoxes from '../containers/ColorBoxes'
+import Login from '../containers/login/login';
 
 class App extends Component {
   render() {
@@ -17,15 +20,14 @@ class App extends Component {
     } = this.props
 
     return (
-      <div>
-        <Login />
-        <br /><br />
-        <Input addColor={this.props.actions.addColor} />
-        <BoxList colors={data} removeBox={this.props.actions.removeColor} />
-        <Slider rotation={rotation} setRotation={this.props.actions.setRotation} />
-        <br /><br />
-        <Canvas colors={data} rotation={rotation}/>
+      <ConnectedRouter history={history}>
+        <div>
+          <Header />
+          <Route exact path='/' component={Home} />
+          <Route path='/login' component={Login} />
+          <Route path='/colorboxes' component={ColorBoxes} colors={data} removeBox={this.props.actions.removeColor} rotation={rotation} setRotation={this.props.actions.setRotation}  />
         </div>
+      </ConnectedRouter>
     );
   };
 }
