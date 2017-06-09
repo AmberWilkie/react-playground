@@ -5,6 +5,7 @@ class Login extends Component {
     email: '',
     password: '',
     loggedIn: false,
+    status: null
   }
 
   submitLogin = (e) => {
@@ -26,12 +27,18 @@ class Login extends Component {
     })
       .then((resp) => {
         const token = resp.headers.get('X-Auth-Token')
-        console.log(token);
+        console.log('token: ', token);
+        if(resp.status === 404) {
+          this.setState({
+            status: resp.statusText
+          })
+        }
         if(token) {
           this.setState({
             loggedIn: true
           })
         }
+        return resp;
       })
   }
 
@@ -66,7 +73,10 @@ class Login extends Component {
         />
         <button type="submit">Submit Login</button>
         {this.state.loggedIn &&
-        <div>Hooray, you logged in!</div>
+          <div>Hooray, you logged in!</div>
+        }
+        { this.state.status && !this.state.loggedIn &&
+          <div>Error: {this.state.status}</div>
         }
       </form>
     )

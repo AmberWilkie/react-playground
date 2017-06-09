@@ -9,7 +9,7 @@ const initialState = {
 
 export default function colors (state = initialState, action) {
   switch (action.type) {
-    case ADD_COLOR: 
+    case ADD_COLOR:
       return {
         ...state,
         data: [...state.data, action.payload]

@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as Actions from '../../actions';
 
 class Input extends React.Component {
-  state = { color: ''};
+  state = { tempColor: ''};
 
   submitText = (e) => {
     e.preventDefault();
-    const validatedColor = this.colourNameToHex(this.state.color);
+    const validatedColor = this.colourNameToHex(this.state.tempColor);
     if (validatedColor.length === 7) {
-      this.props.addColor(validatedColor);
       this.setStateColor('');
+      this.props.actions.addColor(validatedColor);
     }
   }
 
   setStateColor = (color) => {
     this.setState(() => ({
-      color: color
+      tempColor: color
     }))
   }
 
@@ -55,12 +58,12 @@ class Input extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.submitText}>
+      <form onSubmit={this.submitText.bind(this)}>
         <input 
         type="text"
         autoFocus="true"
         placeholder="pick a color" 
-        value={this.state.color}
+        value={this.state.tempColor}
         onChange={ (event) => { this.setStateColor(event.target.value) } }
         />
         <ColorPicker setStateColor={this.setStateColor} />
@@ -73,7 +76,7 @@ class Input extends React.Component {
 class ColorPicker extends Component {
   state = { color: ''};
 
-  render() {
+  render() { 
     return (
       <input type="color"
       onChange={(event) => { this.props.setStateColor(event.target.value) }}
@@ -82,5 +85,19 @@ class ColorPicker extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    data: state.colors.data,
+    rotation: state.colors.rotation,
+    tempColor: ''
+  }
+}
 
-export default Input;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Input);
+
